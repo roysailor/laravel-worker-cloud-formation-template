@@ -1,0 +1,10 @@
+[DEFAULT]
+SSHKeyName=
+VPCAvailabilityZone1=
+VPCAvailabilityZone2=
+ApiSubnet1=
+ApiSubnet2=
+RootStackName=
+SecurityGroup=
+ImageId=
+InstanceType=
