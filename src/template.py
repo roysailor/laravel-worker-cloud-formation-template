@@ -165,6 +165,11 @@ def template():
     UserData=Base64(Join('', [
         "#!/bin/bash -xe\n",
         "apt-get update -y\n",
+        "apt-get install -y ruby\n",
+        "wget https://aws-codedeploy-ap-south-1.s3.amazonaws.com/latest/install\n",
+        "chmod +x ./install\n",
+        "./install auto\n",
+        "service codedeploy-agent start\n",
         "apt-get install -y software-properties-common python-software-properties\n",
         "add-apt-repository -y ppa:ondrej/php\n",
         "apt-get update -y\n",
@@ -172,14 +177,13 @@ def template():
         "mkdir -p /opt/aws/bin\n",
         "wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
         "easy_install --script-dir /opt/aws/bin aws-cfn-bootstrap-latest.tar.gz\n",
-        "# Install the files and packages from the metadata ",
+        "# Install the files and packages from the metadata\n",
         "/opt/aws/bin/cfn-init -v ",
         " --stack ", Ref("AWS::StackName"),
         " --resource LaunchConfiguration",
         " --configsets InstallAndRun ",
         " --region ", Ref("AWS::Region"), "\n",
-        " ",
-        "# Signal the status from cfn-init ",
+        "# Signal the status from cfn-init\n",
         "cfn-signal -e 0",
         "    --resource AutoscalingGroup",
         "    --stack ", Ref("AWS::StackName"),
@@ -196,6 +200,7 @@ def template():
         ),
     ],
     InstanceType=Ref("InstanceType"),
+    IamInstanceProfile="CodeDeployDemo-EC2-Instance-Profile",
     SecurityGroups=[Ref(SecurityGroup)]
     ))
 
